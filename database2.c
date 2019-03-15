@@ -11,7 +11,9 @@ typedef struct ele{
 	//struct ele *next;
 } ele;
 
-ele* head=NULL; //global main pointer
+ele* head=NULL; //global main pointer to the list
+
+ele** array=NULL;	//array pointer
 
 ele* add (ele* a){	//adds element after the provided and returns the pointer to the newly created one
 	ele* hold=a->next;
@@ -35,7 +37,7 @@ ele* del (ele* a){ //deletes element returns address to previous element
 	return b;
 }
 
-int mod (ele* a, int num, float frac, char* string){
+int mod (ele* a, int num, float frac, char* string){ //modifies element
 	int er;
 	a->num=num;
 	a->frac=frac;
@@ -43,22 +45,28 @@ int mod (ele* a, int num, float frac, char* string){
 	return er;
 }
 
-int display(ele* a){
+int dspl(ele* a){ //displays
+	printf("%d %f %s\n",a->num,a->frac,a->string);
+}
+
+
+int dsp_all(ele* a){	//displays all
 	int i;
-	for(i=0;i<100&&a!=NULL;++i){
-		printf("%d %f %s\n",a->num,a->frac,a->string);
+	for(i=0;i<25&&a!=NULL;++i){
+		printf("%d| ",i+1);
+		dspl(a);
 		a=a->next;
-		if(i==99)printf("there are more elements");
+		if(i==25)printf("there are more elements");
 	}
 }
 
-int del_all(){
+int del_all(){	//deletes all
 	ele* a=head->next;
 	while(a!=NULL)
 		a=del(a)->next;
 }
 
-int save(){
+int save(){	//saves to a file
 	FILE* ptr;
 	ptr=fopen("db.txt","w");
 	ele* a=head->next;
@@ -69,17 +77,75 @@ int save(){
 	fclose(ptr);
 }
 
-int load(ele* a){
+int count_all(){	//counts elements
+	int i=0;
+	ele* a;
+	for(a=head;a->next!=NULL;a=a->next)++i;
+	return i;
+}
+int ar_sv(){	//turns list into array
+	/*
+	for(a=head->next;a->next!=NULL;a=a->next){
+		array[i++]=a;
+	if(head->next==NULL) return 1;
+	}*/
+	if(array!=NULL)free(array);
+	array=malloc(count_all()*sizeof(ele*));
+	ele* a=head->next;
+	int i=0;
+	while(a!=NULL){
+	array[i++]=a;
+	a=a->next;
+	}
+	head->num=i; // number of elements in array (not including head)
+}
+int array_print(){
+	int i;
+	//head->next=array[0];
+	for(i=0;i<head->num;++i){
+		printf("|%d|\n",array[i]->num);
+	}
+	printf("head->num=%d",head->num);
+}
+int ar_gt(){	//turnes array into list
+	head->next=array[0];
+	int i=0;
+	while(i<(head->num-1))
+		array[i]->next=array[++i];
+	array[i]->next=NULL;
+	free(array);	
+}
+int load(ele* a){	//loads from a file
 	FILE* ptr;
 	ptr=fopen("db.txt","r");
 	a=add(a);
-	int i=0;
-	while(fscanf(ptr,"%d %f %s\n",&a->num,&a->frac,a->string)==3){
-		a=add(a); printf("loop %d\n",i++);}
+	while(fscanf(ptr,"%d %f %s\n",&a->num,&a->frac,a->string)==3)
+		a=add(a);
 	del(a);
 	fclose(ptr);
 }
 
+ele* get_adr(int indx){	//gets addres of a given index
+	int i=0;
+	ele* a;
+	for(a=head->next;a->next!=NULL;a=a->next){
+		if(++i==indx)
+			return a;
+	}
+}
+int get_indx(ele* adr){	//gets index of a given addres
+	ele* a;
+	int i=1;
+	for(a=head;a->next!=adr&&a->next!=NULL;a=a->next)++i;
+	if(a->next==NULL) return -1;
+	if(a->next==adr) return i;
+}
+int cmpfunc(const void* a, const void* b){
+	int i= (*(ele**)a)->num;
+	int j= (*(ele**)b)->num;	
+	//printf("comparing:%d and %d returned value:%d \n",i,j,i-j);
+	return (i-j);
+}
 
 int main(){
 	head=malloc(sizeof(ele));
@@ -88,10 +154,15 @@ int main(){
 
 	/*add(head);
 	mod(head->next,123,0.234,"pokemon");
-	add(head);
-	mod(head->next,86,0.4,"lapras");
-	display(head->next);*/
-	display(head->next);
+	add(head);*/
+	dsp_all(head->next);
+	//dspl(get_adr(6));
+	ar_sv();
+	qsort(array,head->num,sizeof(ele*),cmpfunc);
+	//array_print();
+	ar_gt();
+	printf("--%d--\n",count_all());
+	dsp_all(head->next);
 
 	//save();
 	del_all();	
