@@ -23,7 +23,7 @@ ele* add (ele* a){	//adds element after the provided and returns the pointer to 
 
 ele* get_prev (ele* a){	//gets address to previous element
 	ele* i;
-	for(i=head;i->next!=a&&i->next==NULL;i=i->next);
+	for(i=head;i->next!=a&&i->next!=NULL;i=i->next);
 	return i;
 }
 
@@ -74,7 +74,7 @@ int load(ele* a){
 	ptr=fopen("db.txt","r");
 	a=add(a);
 	int i=0;
-	while(fscanf(ptr,"%d %f %s\n",&a->num,&a->frac,a->string)>0){
+	while(fscanf(ptr,"%d %f %s\n",&a->num,&a->frac,a->string)==3){
 		a=add(a); printf("loop %d\n",i++);}
 	del(a);
 	fclose(ptr);
