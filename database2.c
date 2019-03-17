@@ -32,6 +32,7 @@ int get_indx(ele* adr);	//gets index of a given addres
 int mod (ele* a, int num, float frac, char* string); //modifies element (not very useful)
 int search(char *hid); //searching function
 int dsp_num(ele* a, int j); //
+int cl_str();
 //now to end user functions
 int usr_add();	//
 int usr_search();	//
@@ -40,23 +41,10 @@ int usr_del();	//
 int usr_sort(); //
 int usr_dspl(); //
 
-int usr_dspl(){
-	int index;
-	dsp_num(head->next,30);
-	while(1){
-		printf("w bazie jest %d elementow\n Od ktorego elementu chcesz wyswietlic?\n jesli chcesz wyjsc z trybu wyswietlania wpisz cos innego niz liczbe.",count_all());
-		if(scanf(" %d",index)==0)
-			break;
-		dsp_num(get_adr(index),30);
-	}
-	fflush(stdin);
-	return 0;
-}
-
 int main(){
 	head=malloc(sizeof(ele));
 	head->next=NULL;
-	load("db_gen.txt",head);
+	load("db.txt",head);
 
 	/*add(head);
 	mod(head->next,123,0.234,"pokemon");
@@ -64,9 +52,11 @@ int main(){
 	int loop=1;
 	char cwt='a';
 	while(loop){
-	printf("co chcesz zrbic?\nd-dodaj element g-szukaj m-modyfikuj u-usun s-sotuj w-wyswietl e-zamknij program\n");
-	cwt='e';
-	scanf(" %c",&cwt);
+		printf("co chcesz zrbic?\nd-dodaj element g-szukaj m-modyfikuj ");
+		printf("u-usun s-sotuj w-wyswietl e-zamknij program\n");
+		cwt='\n';
+		scanf(" %c",&cwt);
+
 	//fflush(stdin);
 		switch(cwt){
 			case 'd':
@@ -91,13 +81,26 @@ int main(){
 				loop=0;
 				break;
 		}
+		cl_str();
 	}
 	//dsp_all();
 
 
-	save("db_test.txt");
+	save("db.txt");
 	del_all();	
 	free(head);
+	return 0;
+}
+
+int usr_dspl (){
+	int index;
+	dsp_num(head->next,30);
+	while(1){
+		printf("w bazie jest %d elementow\n Od ktorego elementu chcesz wyswietlic?\n jesli chcesz wyjsc z trybu wyswietlania wpisz cos innego niz liczbe.",count_all());
+		if(scanf("%d",&index)==0)
+			break;
+		dsp_num(get_adr(index),30);
+	}
 	return 0;
 }
 
@@ -146,6 +149,7 @@ int usr_mod (){
 		printf("niepoprawny adres\n");
 		return 1;
 	}
+	dspl(a);
 	printf("wpisz nowe dane \n");
 	printf("numer:");
 	if(scanf("%d",&a->num)==0){
@@ -219,13 +223,14 @@ int dspl (ele* a){ //displays
 	printf("%6d %10.*f %15s\n",a->num,3,a->frac,a->string);
 }
 
-int dsp_num(ele* a, int j){
+int dsp_num (ele* a, int j){
 	int i;
 	for(i=0;i<j&&a!=NULL;++i){
 		printf("%5d| ",get_indx(a));
 		dspl(a);
 		a=a->next;
 	}
+	return 0;
 }
 int dsp_all (){	//displays all
 	int i=0;
@@ -281,6 +286,10 @@ int ar_gt (){
 int load (char* file, ele* a){	//loads from a file
 	FILE* ptr;
 	ptr=fopen(file,"r");
+	if(ptr==NULL){
+		printf("nie mozna znalezc bazy danych\n");
+		return 0;
+	}
 	a=add(a);
 	while(fscanf(ptr,"%d %f %s\n",&a->num,&a->frac,a->string)==3)
 		a=add(a);
@@ -288,11 +297,11 @@ int load (char* file, ele* a){	//loads from a file
 	fclose(ptr);
 }
 
-ele* get_adr (int indx){	//gets addres of a given index
+ele* get_adr (int index){	//gets addres of a given index
 	int i=0;
 	ele* a;
 	for(a=head->next;a!=NULL;a=a->next){
-		if(++i==indx)
+		if(++i==index)
 			return a;
 	}
 	return NULL;
@@ -347,6 +356,11 @@ int search (char *hid){
 		}
 	}
 	printf("znaleziono %d lini pasujacych do wyszukania\n",i);
+}
+
+int cl_str(){
+	int c;
+	while((c = getchar()) != '\n' && c != EOF);
 }
 
 
