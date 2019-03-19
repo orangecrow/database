@@ -26,7 +26,7 @@ int save(char*);	//saves to a file
 int load(char*,ele* a);	//loads from a file after the element (in case you wanted to load more files)
 int ar_sv();	//turns list into array
 int ar_gt();	//turnes array into list
-char cmp_by[3]="zzz";	//string determining order of comparisons
+char cmp_by[3]="zz";	//string determining order of comparisons
 int cmpfunc(const void* a, const void* b); //function for quicksort
 int get_indx(ele* adr);	//gets index of a given addres
 int mod (ele* a, int num, float frac, char* string); //modifies element (not very useful)
@@ -42,7 +42,7 @@ int usr_sort(); //
 int usr_dspl(); //
 
 int main(){
-	head=malloc(sizeof(ele));
+	head=(ele*)malloc(sizeof(ele));
 	head->next=NULL;
 	load("db.txt",head);
 
@@ -198,9 +198,9 @@ int usr_sort (){
 
 ele* add (ele* a){	//adds element after the provided and returns the pointer to the newly created one
 	ele* hold=a->next;
-	a->next=malloc(sizeof(ele));
+	a->next=(ele*)malloc(sizeof(ele));
 	a->next->next=hold;
-	a->next->string=malloc(sizeof(char)*100);
+	a->next->string=(ele*)malloc(sizeof(char)*100);
 	return a->next;
 }
 
@@ -247,7 +247,7 @@ int del_all (){	//deletes all
 		a=del(a)->next;
 }
 
-int save (char* file){	//saves to a file
+int save (const char* file){	//saves to a file
 	FILE* ptr;
 	ptr=fopen(file,"w");
 	ele* a;
@@ -266,7 +266,7 @@ int count_all (){	//counts elements
 
 int ar_sv (){
 	head->num=count_all();			// number of elements will be stored here
-	array=malloc(head->num*sizeof(ele*));
+	array=(ele*)malloc(head->num*sizeof(ele*));
 	ele* a;
 	int i=0;
 	for(a=head->next;a!=NULL;a=a->next)
@@ -283,7 +283,7 @@ int ar_gt (){
 }
 
 
-int load (char* file, ele* a){	//loads from a file
+int load (const char* file, ele* a){	//loads from a file
 	FILE* ptr;
 	ptr=fopen(file,"r");
 	if(ptr==NULL){
