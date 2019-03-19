@@ -22,8 +22,8 @@ int dspl(ele* a); //displays element
 int dsp_all();	//displays all elements
 int del_all();	//deletes all elements
 int count_all();//counts elements
-int save(char*);	//saves to a file
-int load(char*,ele* a);	//loads from a file after the element (in case you wanted to load more files)
+int save(const char*);	//saves to a file
+int load(const char*,ele* a);	//loads from a file after the element (in case you wanted to load more files)
 int ar_sv();	//turns list into array
 int ar_gt();	//turnes array into list
 char cmp_by[3]="zz";	//string determining order of comparisons
