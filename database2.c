@@ -200,7 +200,7 @@ ele* add (ele* a){	//adds element after the provided and returns the pointer to 
 	ele* hold=a->next;
 	a->next=(ele*)malloc(sizeof(ele));
 	a->next->next=hold;
-	a->next->przedmiot=(ele*)malloc(sizeof(char)*100);
+	a->next->przedmiot=(char*)malloc(sizeof(char)*100);
 	return a->next;
 }
 
@@ -266,7 +266,7 @@ int count_all (){	//counts elements
 
 int ar_sv (){
 	head->numer_albumu=count_all();			// numer_albumuber of elements will be stored here
-	array=(ele*)malloc(head->numer_albumu*sizeof(ele*));
+	array=(ele**)malloc(head->numer_albumu*sizeof(ele*));
 	ele* a;
 	int i=0;
 	for(a=head->next;a!=NULL;a=a->next)
