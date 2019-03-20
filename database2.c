@@ -220,7 +220,7 @@ ele* del (ele* a){ //deletes element returns address to previous element
 
 
 int dspl (ele* a){ //displays
-	printf("%6d %10.*f %15s\n",a->numer_albumu,3,a->ocena,a->przedmiot);
+	printf("%6d %10.*f %15s\n",a->numer_albumu,2,a->ocena,a->przedmiot);
 }
 
 int dsp_numer_albumu (ele* a, int j){
