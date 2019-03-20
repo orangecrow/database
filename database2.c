@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<przedmiot.h>
+#include<string.h>
 
 typedef struct ele{
 	int numer_albumu;
