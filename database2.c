@@ -109,19 +109,19 @@ int usr_add(){
 	ele* a;
 	a=add(head);
 	printf("wpisz nowe dane \n");
-	printf("numer_albumuer:");
+	printf("numer_albumu:");
 	if(scanf("%d",&a->numer_albumu)==0){
 		printf("niepoprawnie wprowadzone dane");
 		del(a);
 		return 1;
 	}
-	printf("ulamek:");
+	printf("ocena:");
 	if(scanf("%f",&a->ocena)==0){
 		printf("niepoprawnie wprowadzone dane");
 		del(a);
 		return 1;
 	}
-	printf("slowo:");
+	printf("przedmiot:");
 	if(scanf("%s",a->przedmiot)==0){
 		printf("niepoprawnie wprowadzone dane");
 		del(a);
@@ -151,17 +151,17 @@ int usr_mod (){
 	}
 	dspl(a);
 	printf("wpisz nowe dane \n");
-	printf("numer_albumuer:");
+	printf("numer_albumu:");
 	if(scanf("%d",&a->numer_albumu)==0){
 		printf("niepoprawnie wprowadzone dane");
 		return 1;
 	}
-	printf("ulamek:");
+	printf("ocena:");
 	if(scanf("%f",&a->ocena)==0){
 		printf("niepoprawnie wprowadzone dane");
 		return 1;
 	}
-	printf("slowo:");
+	printf("przedmiot:");
 	if(scanf("%s",a->przedmiot)==0){
 		printf("niepoprawnie wprowadzone dane");
 		return 1;
@@ -184,7 +184,7 @@ int usr_del (){
 }
 
 int usr_sort (){
-	printf("wpisz litery dla kolejnosci sortowania \n a-liczba b-uamek c-slowo\n");
+	printf("wpisz litery dla kolejnosci sortowania \n a-numer albumu b-ocena c-przedmiot\n");
 	cmp_by[0]='z';
 	cmp_by[1]='z';
 	cmp_by[2]='z';
